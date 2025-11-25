@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "preact/hooks";
+import { useEffect, useReducer, useState } from "preact/hooks";
 import { DEF_PIC_URL, STUFF_STOREKEY } from "../common/constants.ts";
 import { _, i18nReady } from "../common/i18n.tsx";
 import { Icons } from "../common/icons.tsx";
@@ -113,12 +113,16 @@ export default function KittyPrinter(props: KittyPrinterProps) {
                 });
             });
     });
+
     useEffect(() => {
         document.addEventListener('paste', () => {
-            dispatch({
-                action: 'add',
-                stuff: { type: 'text', id: 0, triggerPaste: true }
-            });
+            if(document.activeElement.type !== "textarea"){
+                dispatch({
+                    action: 'add',
+                    stuff: { type: 'text', id: 0, triggerPaste: true }
+                });
+            }
+
         })
     }, []);
     const comp = <div class="kitty-container">
